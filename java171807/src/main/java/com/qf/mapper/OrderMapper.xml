@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.qf.pojo.Order">
+    <id column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="order_totalPrice" jdbcType="DOUBLE" property="orderTotalprice" />
+    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+    <result column="order_room" jdbcType="BIGINT" property="orderRoom" />
+    <result column="order_type" jdbcType="BIGINT" property="orderType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    order_id, order_time, order_totalPrice, order_status, order_room, order_type
+  </sql>
+  <select id="selectByExample" parameterType="com.qf.pojo.OrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qf.pojo.OrderExample">
+    delete from order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qf.pojo.Order">
+    insert into order (order_id, order_time, order_totalPrice, 
+      order_status, order_room, order_type
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{orderTime,jdbcType=TIMESTAMP}, #{orderTotalprice,jdbcType=DOUBLE}, 
+      #{orderStatus,jdbcType=INTEGER}, #{orderRoom,jdbcType=BIGINT}, #{orderType,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qf.pojo.Order">
+    insert into order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderTime != null">
+        order_time,
+      </if>
+      <if test="orderTotalprice != null">
+        order_totalPrice,
+      </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
+      <if test="orderRoom != null">
+        order_room,
+      </if>
+      <if test="orderType != null">
+        order_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderTime != null">
+        #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderTotalprice != null">
+        #{orderTotalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderRoom != null">
+        #{orderRoom,jdbcType=BIGINT},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qf.pojo.OrderExample" resultType="java.lang.Long">
+    select count(*) from order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update order
+    <set>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderTime != null">
+        order_time = #{record.orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderTotalprice != null">
+        order_totalPrice = #{record.orderTotalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderStatus != null">
+        order_status = #{record.orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderRoom != null">
+        order_room = #{record.orderRoom,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderType != null">
+        order_type = #{record.orderType,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update order
+    set order_id = #{record.orderId,jdbcType=BIGINT},
+      order_time = #{record.orderTime,jdbcType=TIMESTAMP},
+      order_totalPrice = #{record.orderTotalprice,jdbcType=DOUBLE},
+      order_status = #{record.orderStatus,jdbcType=INTEGER},
+      order_room = #{record.orderRoom,jdbcType=BIGINT},
+      order_type = #{record.orderType,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qf.pojo.Order">
+    update order
+    <set>
+      <if test="orderTime != null">
+        order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderTotalprice != null">
+        order_totalPrice = #{orderTotalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderRoom != null">
+        order_room = #{orderRoom,jdbcType=BIGINT},
+      </if>
+      <if test="orderType != null">
+        order_type = #{orderType,jdbcType=BIGINT},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qf.pojo.Order">
+    update order
+    set order_time = #{orderTime,jdbcType=TIMESTAMP},
+      order_totalPrice = #{orderTotalprice,jdbcType=DOUBLE},
+      order_status = #{orderStatus,jdbcType=INTEGER},
+      order_room = #{orderRoom,jdbcType=BIGINT},
+      order_type = #{orderType,jdbcType=BIGINT}
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+</mapper>
